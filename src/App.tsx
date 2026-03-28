@@ -9,10 +9,10 @@ import { Trophy, Play, RotateCcw, Coins, Zap, Twitter, ExternalLink, Volume2, Vo
 
 type GameState = 'START' | 'PLAYING' | 'GAME_OVER';
 
-const COIN_SIZE = 80;
-const INITIAL_SPEED = 1500; // ms
-const MIN_SPEED = 400;
-const SPEED_DECREMENT = 50;
+const COIN_SIZE = 120; // increased from 100
+const INITIAL_SPEED = 4000; // ms
+const MIN_SPEED = 1500; // ms
+const SPEED_DECREMENT = 10; // ms
 
 export default function App() {
   const [gameState, setGameState] = useState<GameState>('START');
@@ -120,9 +120,10 @@ export default function App() {
     if (!gameAreaRef.current) return;
     const { clientWidth, clientHeight } = gameAreaRef.current;
     
-    // Keep coin within bounds
-    const x = Math.random() * (clientWidth - COIN_SIZE);
-    const y = Math.random() * (clientHeight - COIN_SIZE);
+    // Keep coin within bounds with a small padding
+    const padding = 20;
+    const x = padding + Math.random() * (clientWidth - COIN_SIZE - padding * 2);
+    const y = padding + Math.random() * (clientHeight - COIN_SIZE - padding * 2);
     
     setCoinPos({ x, y });
     
@@ -147,16 +148,11 @@ export default function App() {
     spawnCoin();
   };
 
-  const handleCoinTap = (e: React.MouseEvent | React.TouchEvent) => {
+  const handleCoinTap = (e: React.PointerEvent) => {
     e.stopPropagation();
     if (gameState !== 'PLAYING') return;
 
     playSound(880, 'sine', 0.1); // High ping
-
-    // Prevent default to avoid double taps on mobile
-    if ('touches' in e) {
-      // e.preventDefault();
-    }
 
     setScore((prev) => {
       const newScore = prev + 1;
@@ -167,9 +163,7 @@ export default function App() {
     });
 
     // Visual feedback
-    const clientX = 'touches' in e ? e.touches[0].clientX : (e as React.MouseEvent).clientX;
-    const clientY = 'touches' in e ? e.touches[0].clientY : (e as React.MouseEvent).clientY;
-    setFeedback({ id: Date.now(), x: clientX, y: clientY });
+    setFeedback({ id: Date.now(), x: e.clientX, y: e.clientY });
 
     spawnCoin();
   };
@@ -300,8 +294,6 @@ export default function App() {
       <div 
         ref={gameAreaRef}
         className="relative w-full h-full cursor-crosshair"
-        onMouseDown={gameState === 'PLAYING' ? handleMiss : undefined}
-        onTouchStart={gameState === 'PLAYING' ? handleMiss : undefined}
       >
         <AnimatePresence>
           {gameState === 'PLAYING' && (
@@ -311,8 +303,7 @@ export default function App() {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0, opacity: 0 }}
               transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-              onMouseDown={handleCoinTap}
-              onTouchStart={handleCoinTap}
+              onPointerDown={handleCoinTap}
               style={{
                 position: 'absolute',
                 left: coinPos.x,
@@ -320,12 +311,12 @@ export default function App() {
                 width: COIN_SIZE,
                 height: COIN_SIZE,
               }}
-              className="flex items-center justify-center cursor-pointer"
+              className="flex items-center justify-center cursor-pointer touch-none"
             >
               <div className="relative w-full h-full bg-purple-primary rounded-full shadow-[0_0_30px_rgba(168,85,247,0.6)] flex items-center justify-center border-4 border-purple-light/30">
-                <Coins className="w-10 h-10 text-white fill-white/20" />
+                <Coins className="w-12 h-12 text-white fill-white/20" />
                 {/* Progress Ring */}
-                <svg className="absolute inset-0 w-full h-full -rotate-90">
+                <svg className="absolute inset-0 w-full h-full -rotate-90 pointer-events-none">
                   <motion.circle
                     cx={COIN_SIZE / 2}
                     cy={COIN_SIZE / 2}
