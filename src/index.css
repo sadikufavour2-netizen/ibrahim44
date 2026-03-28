@@ -1,0 +1,16 @@
+@import "tailwindcss";
+
+@theme {
+  --color-purple-primary: #A855F7;
+  --color-purple-dark: #6B21A8;
+  --color-purple-light: #D8B4FE;
+}
+
+@layer base {
+  body {
+    @apply bg-black text-white overflow-hidden select-none;
+    font-family: 'Inter', system-ui, sans-serif;
+  }
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Space+Grotesk:wght@700&display=swap');
