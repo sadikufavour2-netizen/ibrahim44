@@ -282,24 +282,10 @@ export default function App() {
               <span className="text-xs font-bold uppercase tracking-widest hidden sm:inline">Menu</span>
             </button>
           )}
-          {gameState === 'PLAYING' && (
-            <div className="flex flex-col">
-              <span className="text-purple-light text-xs font-bold uppercase tracking-widest opacity-60">Score</span>
-              <span className="text-4xl font-black text-white tabular-nums">{score}</span>
-            </div>
-          )}
         </div>
 
         <div className="flex items-center gap-4 pointer-events-auto">
-          {gameState === 'PLAYING' ? (
-            <div className="flex flex-col items-end">
-              <span className="text-purple-light text-xs font-bold uppercase tracking-widest opacity-60">Level</span>
-              <div className="flex items-center gap-2">
-                <Zap className="w-4 h-4 text-purple-primary fill-purple-primary" />
-                <span className="text-4xl font-black text-white">{level}</span>
-              </div>
-            </div>
-          ) : (
+          {gameState !== 'PLAYING' && (
             <button 
               onClick={() => setIsMuted(!isMuted)}
               className="p-3 bg-white/5 hover:bg-white/10 rounded-xl transition-colors text-white/60 hover:text-white"
@@ -358,21 +344,7 @@ export default function App() {
           )}
         </AnimatePresence>
 
-        {/* Tap Feedback */}
-        <AnimatePresence>
-          {feedback && (
-            <motion.div
-              key={feedback.id}
-              initial={{ opacity: 1, y: feedback.y - 20, x: feedback.x - 10 }}
-              animate={{ opacity: 0, y: feedback.y - 60 }}
-              exit={{ opacity: 0 }}
-              onAnimationComplete={() => setFeedback(null)}
-              className="absolute pointer-events-none text-purple-light font-black text-xl z-50"
-            >
-              +1
-            </motion.div>
-          )}
-        </AnimatePresence>
+        {/* Tap Feedback removed as requested */}
       </div>
 
       {/* Overlays */}
