@@ -256,7 +256,7 @@ export default function App() {
                 <Menu className="w-6 h-6" />
               </button>
               <a 
-                href="https://analytics.vgdh.io/ibrahim45.vercel.app" 
+                href="https://analytics.vgdh.io/ibrahim46.vercel.app" 
                 target="_blank" 
                 rel="noopener noreferrer" 
                 className="p-3 bg-white/5 hover:bg-white/10 rounded-xl transition-colors text-white/60 hover:text-white flex items-center gap-2"
