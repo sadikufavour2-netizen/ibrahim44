@@ -248,12 +248,24 @@ export default function App() {
       <div className="absolute top-8 left-0 right-0 flex justify-between px-8 z-40 pointer-events-none">
         <div className="flex items-center gap-4 pointer-events-auto">
           {gameState !== 'PLAYING' && (
-            <button 
-              onClick={() => setIsMenuOpen(true)}
-              className="p-3 bg-white/5 hover:bg-white/10 rounded-xl transition-colors text-white/60 hover:text-white"
-            >
-              <Menu className="w-6 h-6" />
-            </button>
+            <div className="flex items-center gap-2">
+              <button 
+                onClick={() => setIsMenuOpen(true)}
+                className="p-3 bg-white/5 hover:bg-white/10 rounded-xl transition-colors text-white/60 hover:text-white"
+              >
+                <Menu className="w-6 h-6" />
+              </button>
+              <a 
+                href="https://analytics.vgdh.io/ibrahim321.vercel.app" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="p-3 bg-white/5 hover:bg-white/10 rounded-xl transition-colors text-white/60 hover:text-white flex items-center gap-2"
+                title="Analytics"
+              >
+                <BarChart className="w-6 h-6" />
+                <span className="text-[10px] font-black uppercase tracking-widest hidden sm:inline">Analytics</span>
+              </a>
+            </div>
           )}
           {gameState === 'GAME_OVER' && (
             <button 
